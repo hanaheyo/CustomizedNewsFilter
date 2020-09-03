@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import re
 import time
+import csv
 
 """
 네이버 뉴스 크롤링 코드입니다.
@@ -15,9 +16,6 @@ https://entertain.naver.com/ranking
 
 
 def naver_crwalling(url):
-    # 리스트 선언
-    crawl_title = []
-    crawl_comments = []
     # 크롬 open
     driver_path = "C:\Program Files (x86)\chromedriver.exe"
     driver = webdriver.Chrome(executable_path=driver_path)
@@ -27,12 +25,17 @@ def naver_crwalling(url):
         driver.get(url_page)
         time.sleep(0.3)
         # 1~30 링크 클릭
+
         driver.find_element_by_css_selector(
-            'ol.ranking_list > li.ranking_item is_num{0} > div.ranking_text > div.ranking_headline > a'.format(x)).click()
+            '#wrap > table > tbody > tr > td.content > div > div.ranking > ol > li.ranking_item.is_num{0} > div.ranking_text > div.ranking_headline > a'.format(x)).click()
         time.sleep(7)
         # 댓글창 클릭
-        driver.find_element_by_css_selector(
-            '#cbox_module > div.u_cbox_wrap u_cbox_ko u_cbox_type_sort_favorite > div.u_cbox_view_comment > a > span.u_cbox_in_view_comment').click()
+        try:
+            driver.find_element_by_css_selector(
+                '#cbox_module > div.u_cbox_wrap > div.u_cbox_view_comment > a > span.u_cbox_in_view_comment').click()
+        except:
+            driver.find_element_by_css_selector(
+                '#cbox_module > div > div > a').click()
         time.sleep(0.3)
         # 댓글 끝까지 로드
         while(1):
@@ -45,14 +48,16 @@ def naver_crwalling(url):
         # 페이지 추출 및 리스트에 추가
         html = driver.page_source
         soup = BeautifulSoup(html, "lxml")
-        title = soup.find('h3', 'articleTitle').get_text()
         temp = soup.find_all('span', 'u_cbox_contents')
         print(len(temp))
-        for i in range(len(temp)):
-            crawl_title.append(title)
-            crawl_comments.append(temp[i].get_text())
 
+        f = open('naver_comments.csv', 'a', encoding='utf-8-sig', newline='')
+        wr = csv.writer(f)
+        for i in range(len(temp)):
+            wr.writerow([temp[i].get_text()])
+        f.close()
     print('----한페이지 끝!-----')
-    naver_crawl = pd.DataFrame(
-        {'Title': crawl_title, 'Comments': crawl_comments})
-    return naver_crawl
+
+
+naver_crwalling(
+    'https://news.naver.com/main/ranking/popularMemo.nhn?rankingType=popular_memo&sectionId=100&date=20200903')
