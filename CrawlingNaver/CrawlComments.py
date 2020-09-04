@@ -51,7 +51,8 @@ def naver_crwalling(url):
         temp = soup.find_all('span', 'u_cbox_contents')
         print(len(temp))
 
-        f = open('naver_comments.csv', 'a', encoding='utf-8-sig', newline='')
+        f = open('naver_comments_200827.csv', 'a',
+                 encoding='utf-8-sig', newline='')
         wr = csv.writer(f)
         for i in range(len(temp)):
             wr.writerow([temp[i].get_text()])
@@ -60,4 +61,4 @@ def naver_crwalling(url):
 
 
 naver_crwalling(
-    'https://news.naver.com/main/ranking/popularMemo.nhn?rankingType=popular_memo&sectionId=100&date=20200903')
+    'https://news.naver.com/main/ranking/popularMemo.nhn?rankingType=popular_memo&sectionId=100&date=20200827')
