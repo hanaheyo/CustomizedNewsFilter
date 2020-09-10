@@ -2,12 +2,12 @@
 
 function changeContent(e) {
     chrome.tabs.executeScript({
-        file:"find_comments.js"
+        file: "find_comments.js"
     });
 }
 
 document.querySelector("#btn_go").addEventListener("click", changeContent);
-document.querySelector("#btn_test").addEventListener("click", function(){
+document.querySelector("#btn_test").addEventListener("click", function () {
     var text = document.querySelector('#test_text').value;
     console.log(text);
 });
