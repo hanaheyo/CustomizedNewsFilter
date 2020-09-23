@@ -1,1 +1,0 @@
-let lecturePdf = document.querySelector("#lecturePdf")
