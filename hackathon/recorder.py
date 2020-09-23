@@ -1,0 +1,2 @@
+import subprocess
+subprocess.call('ffmpeg -f gdigrab -framerate 6 -offset_x 100 -offset_y 200 -video_size svga -i desktop -f dshow -i audio="virtual-audio-capturer" out12.mp4') # check the ffmpeg command line :)
