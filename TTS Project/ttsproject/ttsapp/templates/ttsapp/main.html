@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TTS Service</title>
-
     {% comment %} bootstrap {% endcomment %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     
@@ -19,57 +18,63 @@
 <body>
     <div class="container">
         <h1>Welcome! TTS Service</h1>
-        <form action="{% url 'tts_converter' %}" method="POST">
-            {% csrf_token %}
+        <hr/>
+        {% comment %} <div class="row"> {% endcomment %}
+            {% comment %} <div class="col-sm-4"> {% endcomment %}
+                <form action="{% url 'tts_converter' %}" method="POST">
+                    {% csrf_token %}
 
-            <h2>텍스트 입력</h2>
-            
+                    <h2>텍스트 입력</h2>
+                    
 
-            {% if body %}
-                <textarea cols=50 rows=20 id='body' name='body'>{{ body }}</textarea>
-            {% else %}
-                <textarea cols=50 rows=20 id='body' name='body'></textarea>
-            {% endif %}
-            
-            <br/>
-            <button class="btn btn-outline-primary" type='submit'>변환하기</button>
-        </form>
-            <br/>
-            <button class="btn btn-outline-primary" id='btn_delay'>딜레이</button>
-            <button class="btn btn-outline-primary" id='btn_strong'>강조</button>
-            <button class="btn btn-outline-primary" id='btn_slow'>느리게</button>
-            <button class="btn btn-outline-primary" id='btn_cardinal'>기수</button>
-            <button class="btn btn-outline-primary" id='btn_ordinal'>서수</button>
+                    {% if body %}
+                        <textarea cols=50 rows=20 id='body' name='body'>{{ body }}</textarea>
+                    {% else %}
+                        <textarea cols=50 rows=20 id='body' name='body'></textarea>
+                        {% comment %} <div id="text_area" contentEditable="true">
+                            텍스트 입력하는 공간입니다~~
+                            <img src="{% static 'ttsapp/img_btn.PNG' %}"/>
+                        </div> {% endcomment %}
+                    {% endif %}
+                    <button class="btn btn-outline-primary" type="button" id='btn_delay'>딜레이</button>
+                    <button class="btn btn-outline-primary" type="button" id='btn_strong'>강조</button>
+                    <button class="btn btn-outline-primary" type="button" id='btn_slow'>느리게</button>
+                    <button class="btn btn-outline-primary" type="button" id='btn_cardinal'>기수</button>
+                    <button class="btn btn-outline-primary" type="button" id='btn_ordinal'>서수</button>
+                    <button class="btn btn-outline-primary" type='submit'>변환하기</button>
+                </form>
+                    {% comment %} <span id="result"></span> {% endcomment %}
 
-            {% comment %} <span id="result"></span> {% endcomment %}
+                {% if audio %}
+                    {% comment %} <iframe src='../../static/ttsapp/output.mp3' id='audio' allow="autoplay 'none'"></iframe> {% endcomment %}
+                    <audio src='../../static/ttsapp/output.mp3' controls></audio>
+                {% endif %}
+                <a href="{% url 'main' %}">초기화</a>
+            {% comment %} </div> {% endcomment %}
 
-        <script type="text/javascript" src="../../static/ttsapp/insert_delay.js"></script>
-        <br/>
-        {% if audio %}
-            <iframe src='../../static/ttsapp/output.mp3' id='audio' allow="autoplay 'none'"></iframe>
-        {% endif %}
-        <br/>
-        <a href="{% url 'main' %}">초기화</a>
-        <br/>
+            {% comment %} <div class="col-sm-8"> {% endcomment %}
+                <div class="top-bar">
+                    <div class="inputFile">
+                        <label for="lecturePdf">영상으로 만들 pdf를 선택해주세요 :</label>
+                        <input type="file" id="lecturePdf" name="lecturePdf" accept=".pdf">
+                    </div>
+                    <button class="btn" id="prev-page">
+                        <i class="fas fa-arrow-circle-left"></i> Prev Page
+                    </button>
+                    <button class="btn" id="next-page">
+                        Next Page <i class="fas fa-arrow-circle-right"></i>
+                    </button>
+                    <span class="page-info">
+                        Page <span id="page-num"></span> of <span id="page-count"></span>
+                    </span>
+                </div>
+
+                <canvas id="pdf-render"></canvas>
+            {% comment %} </div> {% endcomment %}
+        {% comment %} </div> {% endcomment %}
     </div>
 
-    <div class="top-bar">
-        <div class="inputFile">
-            <label for="lecturePdf">영상으로 만들 pdf를 선택해주세요 :</label>
-            <input type="file" id="lecturePdf" name="lecturePdf" accept=".pdf">
-        </div>
-        <button class="btn" id="prev-page">
-            <i class="fas fa-arrow-circle-left"></i> Prev Page
-        </button>
-        <button class="btn" id="next-page">
-            Next Page <i class="fas fa-arrow-circle-right"></i>
-        </button>
-        <span class="page-info">
-            Page <span id="page-num"></span> of <span id="page-count"></span>
-        </span>
-    </div>
-
-    <canvas id="pdf-render"></canvas>
+    <script type="text/javascript" src="../../static/ttsapp/insert_delay.js?ver=1"></script>
 
     {% comment %} pdf viewer {% endcomment %}
     <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
