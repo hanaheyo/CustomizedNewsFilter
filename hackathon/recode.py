@@ -10,17 +10,17 @@ import pyautogui
 # fps = 20.0
 
 # out = cv2.VideoWriter(filename, codec, fps, resolution) 
-screen_size = (500, 600)
+screen_size = (1200, 700)
 # pyautogui.size () 
 fourcc = cv2.VideoWriter_fourcc(*"XVID")
 out=cv2.VideoWriter("out.avi",fourcc,60.0, (screen_size))
 
 cv2.namedWindow("Live", cv2.WINDOW_NORMAL) 
 
-cv2.resizeWindow("Live", 0.1, 0.1) 
+cv2.resizeWindow("Live", 10,10) 
   
 while True: 
-    img = pyautogui.screenshot(region=(0, 500, 500, 600))  
+    img = pyautogui.screenshot(region=(500, 300, 1200, 700))  
     frame = np.array(img) 
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) 
     out.write(frame) 
