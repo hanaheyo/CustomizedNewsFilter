@@ -15,10 +15,10 @@
   <div class="top-bar">
     <div class="inputFile">
       <label for="lecturePdf">영상으로 만들 pdf를 선택해주세요 :</label>
-      <input type="file" id="lecturePdf" name="lecturePdf" accept=".pdf">
+      <input type="file" id="lecturePdf" name="lecturePdf" accept=".pdf" onchange="previewFile()">
     </div>
-    <button class="btn" id="prev-page">
-      <i class="fas fa-arrow-circle-left"></i> Prev Page
+    <button class="btn" id="prev-page" onmouseover="myFunction()>
+      <i class=" fas fa-arrow-circle-left"></i> Prev Page
     </button>
     <button class="btn" id="next-page">
       Next Page <i class="fas fa-arrow-circle-right"></i>

@@ -1,6 +1,19 @@
-let lectureFile = document.querySelector("#lecturePdf").value;
-// const url = lectureFile;
-const url = '../docs/lecture.pdf';
+let url = '../docs/lecture.pdf';
+
+function previewFile() {
+  var file = document.querySelector('input[type=file]').files[0];
+  var reader = new FileReader();
+
+  reader.addEventListener("load", function () {
+    // console.log(reader.result);
+    url = reader.result;
+  }, false);
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+}
+
 
 let pdfDoc = null,
   pageNum = 1,
@@ -93,3 +106,12 @@ pdfjsLib
 // Button Events
 document.querySelector('#prev-page').addEventListener('click', showPrevPage);
 document.querySelector('#next-page').addEventListener('click', showNextPage);
+
+// Auto button click
+function prevpageButtonAutoClick() {
+  document.getElementById("#prev-page").click();
+}
+
+function nextpageButtonAutoClick() {
+  document.getElementById("#next-page").click();
+}
